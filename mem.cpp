@@ -21,6 +21,9 @@
 #define WANT_EVAL_REGS 1
 #include "logo.h"
 #include "globals.h"
+#include "smd.h"
+
+
 extern NODE *stack, *numstack, *exp, *val, *parm, *catch_tag, *arg;
 
 /* #ifdef ibm */

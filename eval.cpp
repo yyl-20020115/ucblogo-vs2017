@@ -22,6 +22,7 @@
 #define WANT_EVAL_REGS 1
 #include "eval.h"
 #include "globals.h"
+#include "smd.h"
 
 /* evaluator registers that need saving around evals */
 struct registers regs;

@@ -27,6 +27,7 @@
 #include "logo.h"
 /*   #include "globals.h"   has been moved further down */
 #include <math.h>
+#include "smd.h"
 
 #ifdef HAVE_WX
 #include "wxGraphics.h"

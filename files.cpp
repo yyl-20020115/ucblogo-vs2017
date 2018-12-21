@@ -25,6 +25,7 @@
 
 #include "logo.h"
 #include "globals.h"
+#include "smd.h"
 
 #ifdef HAVE_WX
 #define getc getFromWX_2

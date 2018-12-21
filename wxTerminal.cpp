@@ -63,6 +63,7 @@ extern int readingInstruction;
 #ifndef min
 #define min(a,b)    (((a) < (b)) ? (a) : (b))
 #endif
+#include "smd.h"
 
 using namespace std;
 

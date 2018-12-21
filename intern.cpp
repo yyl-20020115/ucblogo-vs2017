@@ -136,3 +136,44 @@ NODE *intern(NODE *nd) {
 	casedes = make_instance(nd, lownd);
     return(casedes);
 }
+
+void release_all_objects()
+{
+	//#ifdef MEM_DEBUG
+
+	for (int i = 0; i < HASH_LEN; i++)
+	{
+		for (NODE * hash_entry = hash_table[i];
+			hash_entry != NIL;
+			hash_entry = cdr(hash_entry))
+		{
+			NODE * object = car(hash_entry);
+
+			// set the "canonical" node to NIL to force garbage collection.
+			setcar(object, NIL);
+
+			// untreeify the proc node (it holds a circular reference)
+			//untreeify_procnode(procnode__object(object));
+
+			// overwrite the "proc node" with NIL to force garbage collection.
+			setprocnode__object(object, NIL);
+
+			// overwrite the "value" with NIL to force garbage collection.
+			setvalnode__object(object, NIL);
+
+			// overwrite the "propery list" with NIL to force garbage collection.
+			setplist__object(object, NIL);
+
+			// overwrite the "case-list" with NIL to force garbage collection.
+			setcdr(caselistptr__object(object), NIL);
+
+			// overwrite the "object" node with NIL to force garbage collection.
+			setcar(hash_entry, NIL);
+		}
+		//deref(hash_table[i]);
+		hash_table[i] = NIL;
+	}
+	//#endif // MEM_DEBUG
+
+	//free(hash_table);
+}

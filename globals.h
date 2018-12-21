@@ -206,7 +206,8 @@ extern NODE *Unbound, *Not_Enough_Node, *Buttonact, *LogoVersion;
 extern NODE *Minus_Sign, *Minus_Tight, *Startup, *Startuplg, *Query;
 extern NODE *UseAlternateNames, *LogoLogo, *LogoPlatform, *Keyact;
 extern NODE *CommandLine, *Null_Word;
-extern void init(void);
+extern void init();
+extern void uninit();
 extern struct wdtrans translations[];
 extern char *LogoPlatformName;
 

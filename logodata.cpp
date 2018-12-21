@@ -28,6 +28,7 @@
 #include <alloc.h>
 #endif
 #endif
+#include "smd.h"
 
 char special_chars[] = " \t\n(?????+++~)[]-*/=<>\"\\:;|{}";
 

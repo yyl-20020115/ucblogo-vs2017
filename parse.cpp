@@ -46,6 +46,7 @@
 #include <sgtty.h>
 #endif
 #endif
+#include "smd.h"
 
 #include <ctype.h>
 

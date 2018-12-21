@@ -29,6 +29,7 @@
 #include <string.h>
 #include <time.h>
 #include <direct.h>
+#include "smd.h"
 
 char* temploc = "\\";
 char* separator = "\\";
@@ -496,8 +497,14 @@ NODE *intern_p(NODE *caseobj) {
     setflag__caseobj(result, PERMANENT);
     return result;
 }
-
-void init(void) {
+void uninit()
+{
+	for (int i = 0; i < MAX_MESSAGE + NUM_WORDS;i++) {
+		free(message_texts[i]);
+		message_texts[i] = 0;
+	}
+}
+void init() {
     int i = 0;
     NODE *iproc = NIL, *pname = NIL, *cnd = NIL;
     FILE *fp;

@@ -63,6 +63,7 @@ NODE **bottom_stack; /*GC*/
 NODE *command_line = NIL;   /* 6.0 command line args after files */
 
 int stop_quietly_flag=0;
+extern void release_all_objects();
 
 void unblock_input(void) {
     if (input_blocking) {
@@ -346,6 +347,9 @@ int start(int argc, char ** argv) {
 	    stopping_flag = RUN;
 	}
     }
+
+	release_all_objects();
+	uninit();
     //prepare_to_exit(TRUE);
     //exit(0);
     return 0;

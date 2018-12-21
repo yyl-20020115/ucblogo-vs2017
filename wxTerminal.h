@@ -7,6 +7,7 @@
 
 #include <wx/html/htmprint.h>
 #include <wx/print.h>
+#include "smd.h"
 
 #define CURSOR_BLINK_DEFAULT_TIMEOUT	300
 #define CURSOR_BLINK_MAX_TIMEOUT	2000
