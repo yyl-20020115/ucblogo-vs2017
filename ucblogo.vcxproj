@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+    <ProjectGuid>{38FB9E5F-8842-4114-8064-57389D97C06F}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\wxWidgets-3.1.2\include\msvc;C:\wxWidgets-3.1.2\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\wxWidgets-3.1.2\include\msvc;C:\wxWidgets-3.1.2\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include;C:\wxWidgets-2.8.8\lib\vc_lib\mswd;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>wxUSE_GUI=1;__WXDEBUG__;HAVE_WX;__WXMSW__;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\ucblogo.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\ucblogo.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\ucblogo.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>.\Debug\ucblogo.exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\wxWidgets-3.1.2\lib\vc_lib;C:\wxWidgets-3.1.2\lib\vc_lib\mswd;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxbase31d_xml.lib;wxbase31d.lib;wxexpatd.lib;wxjpegd.lib;wxmsw31d_adv.lib;wxmsw31d_aui.lib;wxmsw31d_core.lib;wxmsw31d_gl.lib;wxmsw31d_html.lib;wxmsw31d_media.lib;wxmsw31d_propgrid.lib;wxmsw31d_qa.lib;wxmsw31d_ribbon.lib;wxmsw31d_richtext.lib;wxmsw31d_stc.lib;wxmsw31d_webview.lib;wxmsw31d_xrc.lib;wxpngd.lib;wxregexd.lib;wxscintillad.lib;wxtiffd.lib;comctl32.lib;rpcrt4.lib;wxzlibd.lib;odbc32.lib;wsock32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include;C:\wxWidgets-2.8.8\lib\vc_lib\mswd;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>wxUSE_GUI=1;__WXDEBUG__;HAVE_WX;__WXMSW__;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\ucblogo.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\ucblogo.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\ucblogo.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>.\Release\ucblogo.exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\wxWidgets-3.1.2\lib\vc_lib;C:\wxWidgets-3.1.2\lib\vc_lib\mswd;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxbase31d_xml.lib;wxbase31d.lib;wxexpatd.lib;wxjpegd.lib;wxmsw31d_adv.lib;wxmsw31d_aui.lib;wxmsw31d_core.lib;wxmsw31d_gl.lib;wxmsw31d_html.lib;wxmsw31d_media.lib;wxmsw31d_propgrid.lib;wxmsw31d_qa.lib;wxmsw31d_ribbon.lib;wxmsw31d_richtext.lib;wxmsw31d_stc.lib;wxmsw31d_webview.lib;wxmsw31d_xrc.lib;wxpngd.lib;wxregexd.lib;wxscintillad.lib;wxtiffd.lib;comctl32.lib;rpcrt4.lib;wxzlibd.lib;odbc32.lib;wsock32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="coms.c" />
+    <ClCompile Include="error.c" />
+    <ClCompile Include="eval.c" />
+    <ClCompile Include="files.c" />
+    <ClCompile Include="graphics.c" />
+    <ClCompile Include="init.c" />
+    <ClCompile Include="intern.c" />
+    <ClCompile Include="lists.c" />
+    <ClCompile Include="logodata.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="makehelp.c" />
+    <ClCompile Include="math.c" />
+    <ClCompile Include="mem.c" />
+    <ClCompile Include="obj.c" />
+    <ClCompile Include="paren.c" />
+    <ClCompile Include="parse.c" />
+    <ClCompile Include="print.c" />
+    <ClCompile Include="svn.c" />
+    <ClCompile Include="TextEditor.cpp" />
+    <ClCompile Include="wrksp.c" />
+    <ClCompile Include="wxMain.cpp" />
+    <ClCompile Include="wxterm.c" />
+    <ClCompile Include="wxTerminal.cpp" />
+    <ClCompile Include="wxTurtleGraphics.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="eval.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="gpl_text.h" />
+    <ClInclude Include="logo.h" />
+    <ClInclude Include="LogoFrame.h" />
+    <ClInclude Include="macterm.h" />
+    <ClInclude Include="nographics.h" />
+    <ClInclude Include="TextEditor.h" />
+    <ClInclude Include="win32trm.h" />
+    <ClInclude Include="wxGlobals.h" />
+    <ClInclude Include="wxGraphics.h" />
+    <ClInclude Include="wxMain.h" />
+    <ClInclude Include="wxTerminal.h" />
+    <ClInclude Include="wxTurtleGraphics.h" />
+    <ClInclude Include="xgraphics.h" />
+    <ClInclude Include="ztcterm.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
