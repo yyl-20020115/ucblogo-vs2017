@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <ctype.h>
-
+#include <string.h>
 char line[100], line2[100], line3[100];
 char name[30] = "helpfiles/";
 char name2[30] = "helpfiles/";
 char tocname[20], tocname2[20];
 
-main() {
+int main() {
     FILE *in=fopen("usermanual", "r");
     FILE *fp, *fp2;
     FILE *toc=fopen("helpfiles/HELPCONTENTS", "w");
@@ -17,8 +17,8 @@ main() {
 
     if (toc == NULL) {
 	fprintf(stderr, "Can't open HELPCONTENTS.\n");
-	exit(1);
-    }
+	return 1;
+	}
 
     fputs("Help is available on the following:\n\n", toc);
 
@@ -56,7 +56,7 @@ main() {
 	fp = fopen(name, "w");
 	if (fp == NULL) {
 	    fprintf(stderr, "Can't open %s\n", name);
-	    exit(1);
+		return 1;
 	}
 
 	fprintf(tmp, "%s\n", tocname);
@@ -98,7 +98,7 @@ main() {
 		fp2 = fopen(name2, "w");
 		if (fp2 == NULL) {
 		    fprintf(stderr, "Can't open %s\n", name2);
-		    exit(1);
+			return 1;
 		}
 	    } else fp2 = NULL;
 	} else fp2 = NULL;
@@ -133,5 +133,6 @@ main() {
     fprintf(all, "<=\n>=\n<>\n");	    /* two-char infix */
     fclose(all);
     fclose(toc);
-    exit(0);
+    //exit(0);
+	return 0;
 }

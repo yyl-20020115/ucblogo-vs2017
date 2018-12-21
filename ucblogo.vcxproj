@@ -70,6 +70,7 @@
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4996;</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -108,6 +109,7 @@
       <PrecompiledHeaderOutputFile>.\Release\ucblogo.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <DisableSpecificWarnings>4996;</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -133,28 +135,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="coms.c" />
-    <ClCompile Include="error.c" />
-    <ClCompile Include="eval.c" />
-    <ClCompile Include="files.c" />
-    <ClCompile Include="graphics.c" />
-    <ClCompile Include="init.c" />
-    <ClCompile Include="intern.c" />
-    <ClCompile Include="lists.c" />
-    <ClCompile Include="logodata.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="makehelp.c" />
-    <ClCompile Include="math.c" />
-    <ClCompile Include="mem.c" />
-    <ClCompile Include="obj.c" />
-    <ClCompile Include="paren.c" />
-    <ClCompile Include="parse.c" />
-    <ClCompile Include="print.c" />
-    <ClCompile Include="svn.c" />
+    <ClCompile Include="coms.cpp" />
+    <ClCompile Include="error.cpp" />
+    <ClCompile Include="eval.cpp" />
+    <ClCompile Include="files.cpp" />
+    <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="init.cpp" />
+    <ClCompile Include="intern.cpp" />
+    <ClCompile Include="lists.cpp" />
+    <ClCompile Include="logodata.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="math.cpp" />
+    <ClCompile Include="mem.cpp" />
+    <ClCompile Include="obj.cpp" />
+    <ClCompile Include="paren.cpp" />
+    <ClCompile Include="parse.cpp" />
+    <ClCompile Include="print.cpp" />
+    <ClCompile Include="svn.cpp" />
     <ClCompile Include="TextEditor.cpp" />
-    <ClCompile Include="wrksp.c" />
+    <ClCompile Include="wrksp.cpp" />
     <ClCompile Include="wxMain.cpp" />
-    <ClCompile Include="wxterm.c" />
+    <ClCompile Include="wxterm.cpp" />
     <ClCompile Include="wxTerminal.cpp" />
     <ClCompile Include="wxTurtleGraphics.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="eval.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="gpl_text.h" />
+    <ClInclude Include="graphics.h" />
     <ClInclude Include="logo.h" />
     <ClInclude Include="LogoFrame.h" />
     <ClInclude Include="macterm.h" />

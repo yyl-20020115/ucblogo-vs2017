@@ -112,7 +112,9 @@ extern char *getenv();
 #endif
 #endif
 #endif
-
+#ifdef _WINDOWS
+#include <corecrt_io.h>
+#endif
 typedef enum {wrapmode, fencemode, windowmode} mode_type;
 
 #define WORDSIZE	(8*sizeof(long))

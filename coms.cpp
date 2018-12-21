@@ -57,6 +57,9 @@ extern int check_wx_stop(int force_yield);
 #endif
 #endif
 
+
+extern char *strnzcpy(char *s1, char *s2, int n);
+
 NODE *make_cont(enum labels cont, NODE *val) {
 #ifdef __RZTC__
     union { enum labels lll;
@@ -536,7 +539,7 @@ NODE *lshell(NODE *args) {
     extern FILE *popen();
     char cmdbuf[300];
     FILE *strm;
-    NODE *head = NIL, *tail = NIL, *this;
+    NODE *head = NIL, *tail = NIL, *_this;
     BOOLEAN wordmode = FALSE;
     int len;
     char *old_stringptr = print_stringptr;
@@ -560,14 +563,14 @@ NODE *lshell(NODE *args) {
 	if (cmdbuf[len-1] == '\n')
 	    cmdbuf[--len] = '\0';
 	if (wordmode)
-	    this = make_strnode(cmdbuf, (struct string_block *)NULL, len,
+		_this = make_strnode(cmdbuf, (struct string_block *)NULL, len,
 			STRING, strnzcpy);
 	else
-	    this = parser(make_static_strnode(cmdbuf), FALSE);
+		_this = parser(make_static_strnode(cmdbuf), FALSE);
 	if (head == NIL) {
-	    tail = head = cons(this,NIL);
+	    tail = head = cons(_this,NIL);
 	} else {
-	    setcdr(tail, cons(this,NIL));
+	    setcdr(tail, cons(_this,NIL));
 	    tail = cdr(tail);
 	}
 	fgets(cmdbuf,300,strm);

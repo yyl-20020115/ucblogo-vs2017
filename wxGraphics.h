@@ -1,3 +1,6 @@
+#ifndef __WXGRAPHICS_H__
+#define __WXGRAPHICS_H__
+
 
 /* pen_info is a stucture type with fields for the various
    pen characteristics including the location, size, color,
@@ -127,7 +130,7 @@ pen_info* getPen();
 #define pen_down                 pen_mode=PEN_DOWN
 
 #define button                   wxGetButton()
-#define lastbutton		 wxGetLastButton()
+#define lastbutton				 wxGetLastButton()
 #define mouse_x                  wxGetMouseX()
 #define mouse_y                  wxGetMouseY()
 #define click_x                  wxGetClickX()
@@ -155,17 +158,45 @@ extern void save_pen(pen_info*), restore_pen(pen_info*);
 extern void logofill();
 
 
+// ----------------------------------------------------------------------------
+// Accessed by interpreter 
+// ----------------------------------------------------------------------------
+
+extern void nop();
+extern void set_palette(int, unsigned int, unsigned int, unsigned int);
+extern void get_palette(int, unsigned int*, unsigned int*, unsigned int*);
+extern void save_pen(pen_info *p);
+extern void restore_pen(pen_info *p);
+extern void set_pen_patter();
+extern void logofill();
+extern void wx_clear();
+extern NODE* lclearscreen(NODE *);
+extern void wxDrawLine(int x1, int y1, int x2, int y2, int vis);
+extern void wxSplitScreen();
+extern void wxFullScreen();
+extern void wxTextScreen();
+extern void wxPrepare();
+extern int  wxEditFile(char * f);
+
+extern int wxGetMouseX();
+extern int wxGetMouseY();
+extern int wxGetButton();
+
+extern void redraw_graphics();
+
+extern void wxSetInfo(int type, int val);
+extern int wxGetInfo(int type);
+
+
+extern void wx_refresh();
+
+extern void wx_get_label_size(int *w, int *h);
+extern void wx_adjust_label_height();
+
+
 
 
 /* The sparc has fmod.  So I use it. */
 /* #define fmod(x,y)                x */
 
-
-extern void nop();
-
-
-
-
-
-
-
+#endif

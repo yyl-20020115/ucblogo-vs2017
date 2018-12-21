@@ -689,12 +689,12 @@ NODE *leofp(NODE *args) {
 
 NODE *lkeyp(NODE *args) {
 #if defined(unix) | defined(__WXMSW__)
-    long nc;
+	long nc = 0;
 #endif
-    int c;
+	int c = 0;
 #ifdef WIN32
-    MSG msg;
-    int old_mode;
+	MSG msg = {0};
+    int old_mode = 0;
 #endif
 
     if (readchar_lookahead_buf >= 0) return TrueName();

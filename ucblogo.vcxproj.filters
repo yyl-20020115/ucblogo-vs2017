@@ -15,76 +15,73 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="coms.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="error.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="eval.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="files.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="init.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="intern.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lists.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="logodata.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="makehelp.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="math.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mem.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="paren.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="parse.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="print.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="svn.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wrksp.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wxMain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wxterm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wxTerminal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wxTurtleGraphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="coms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="files.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="intern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lists.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logodata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="obj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paren.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="parse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="svn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wrksp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wxterm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -135,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="eval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

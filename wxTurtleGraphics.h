@@ -1,4 +1,5 @@
-
+#ifndef __WXTURTLEGRAPHICS_H__
+#define __WXTURTLEGRAPHICS_H__
 #include <wx/wx.h>
 
 #include <wx/colordlg.h>
@@ -231,37 +232,4 @@ private:
 };
 
 
-// ----------------------------------------------------------------------------
-// Accessed by interpreter 
-// ----------------------------------------------------------------------------
-void nop();
-void set_palette(int, unsigned int, unsigned int, unsigned int);
-void get_palette(int, unsigned int*, unsigned int*, unsigned int*);
-void save_pen(pen_info *p);
-void restore_pen(pen_info *p);
-void set_pen_patter();
-void logofill();
-void wx_clear();
-NODE lclearscreen(NODE *);
-void wxDrawLine(int x1, int y1, int x2, int y2, int vis);
-void wxSplitScreen();
-void wxFullScreen();
-void wxTextScreen();
-void wxPrepare();
-int  wxEditFile(char * f);
-
-int wxGetMouseX();
-int wxGetMouseY();
-int wxGetButton();
-
-void redraw_graphics();
-
-void wxSetInfo(int type, int val);
-int wxGetInfo(int type);
-
-
-void wx_refresh();
-
-void wx_get_label_size(int *w, int *h);
-void wx_adjust_label_height();
-
+#endif 

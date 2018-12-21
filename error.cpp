@@ -54,7 +54,7 @@ ERR_TYPES erract_errtype;
 char *message_texts[MAX_MESSAGE+NUM_WORDS];
 
 void err_print(char *buffer) {
-    int save_flag = stopping_flag;
+	CTRLTYPE save_flag = stopping_flag;
     int errtype;
     NODE *errargs, *oldfullp;
     FILE *fp;
