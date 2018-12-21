@@ -193,12 +193,14 @@ void _far _cdecl do_ctrl_c(void) {
 #endif
 
 #ifdef HAVE_WX
-int wx_leave_mainloop = 0;
-int  start (int argc,char ** argv) {
 #else
 int main(int argc, char *argv[]) {
+	return start(argc, argv);
+}
 #endif
-    NODE *exec_list = NIL;
+int wx_leave_mainloop = 0;
+int start(int argc, char ** argv) {
+	NODE *exec_list = NIL;
     NODE *cl_tail = NIL;
     int argc2;
     char **argv2;
@@ -345,6 +347,6 @@ int main(int argc, char *argv[]) {
 	}
     }
     //prepare_to_exit(TRUE);
-    exit(0);
+    //exit(0);
     return 0;
 }

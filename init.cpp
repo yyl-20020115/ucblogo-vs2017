@@ -30,10 +30,10 @@
 #include <time.h>
 #include <direct.h>
 
-char* temploc = 0;
-char* separator = 0;
-char* libloc = 0;
-char* cslsloc = 0;
+char* temploc = "\\";
+char* separator = "\\";
+char* libloc = "logolib";
+char* cslsloc = "\\";
 int logo_char_mode = 0;
 
 
@@ -765,34 +765,38 @@ nosugar:
     Not_Enough_Node = cons(NIL, NIL);
 
     sprintf(linebuf,"%s%sMessages", logolib, separator);
-    fp = fopen("Messages", "r");
+	bool haveMessages = true;
+	fp = fopen("Messages", "r");
     if (fp == NULL)
-	fp = fopen(linebuf, "r");
+		fp = fopen(linebuf, "r");
     if (fp == NULL)
-	fp = fopen("C:\\cygwin\\usr\\local\\lib\\logo\\logolib\\Messages", "r");
-    if (fp == NULL) {
-	printf("Error -- Can't read Messages file.\n");
-	exit(1);
+		fp = fopen("C:\\logo\\logolib\\Messages", "r");
+    
+	if (fp == NULL) {
+		printf("Error -- Can't read Messages file.\n");
+	//exit(1);
+		haveMessages = false;
     }
+	if (haveMessages) {
+		for (i = 0; i < (MAX_MESSAGE + NUM_WORDS); i++) {
+			while (wx_fgets(linebuf, 99, fp) != NULL && linebuf[0] == ';');
+			linebuf[strlen(linebuf) - 1] = '\0';
+			message_texts[i] = (char *)malloc(1 + strlen(linebuf));
+			strcpy(message_texts[i], linebuf);
+		}
 
-    for (i=0; i<(MAX_MESSAGE+NUM_WORDS); i++) {
-	while (wx_fgets(linebuf, 99, fp) != NULL && linebuf[0] == ';') ;
-	linebuf[strlen(linebuf)-1] = '\0';
-	message_texts[i] = (char *) malloc(1+strlen(linebuf));
-	strcpy(message_texts[i], linebuf);
-    }
+		fclose(fp);
 
-    fclose(fp);
 
 #define wd_copy(x) \
     translations[Name_ ## x].English = intern_p(make_static_strnode(#x)); \
     translations[Name_ ## x].Alt = \
 	intern_p(make_static_strnode(message_texts[MAX_MESSAGE + Name_ ## x]));
 
-    do_trans(wd_copy);
+		do_trans(wd_copy);
 
-    translations[Name_macro].English = intern_p(make_static_strnode(".macro"));
-
+		translations[Name_macro].English = intern_p(make_static_strnode(".macro"));
+	}
 #define True translations[Name_true].English
 #define False translations[Name_false].English
 
