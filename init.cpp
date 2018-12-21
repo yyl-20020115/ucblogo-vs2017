@@ -36,6 +36,7 @@ char* libloc = "logolib";
 char* cslsloc = "\\";
 int logo_char_mode = 0;
 
+extern unsigned int GetWd(unsigned int length, char* p);
 
 typedef struct priminfo {
     char *name;
@@ -525,9 +526,9 @@ void init(void) {
 #endif
 #ifdef ecma
     for (i=0; i<128; i++)
-	ecma_array[i] = i;
+		ecma_array[i] = i;
     for (i=0; i<ecma_size; i++)
-	ecma_array[(int)special_chars[i]] = ecma_begin+i;
+		ecma_array[(int)special_chars[i]] = ecma_begin+i;
     i = 0;
 #endif
 
@@ -764,11 +765,22 @@ nosugar:
     the_generation = cons(NIL, NIL);
     Not_Enough_Node = cons(NIL, NIL);
 
-    sprintf(linebuf,"%s%sMessages", logolib, separator);
+	char* pb = linebuf;
+#ifdef _WINDOWS
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
+	char buffer[MAX_PATH + 1] = { 0 };
+	GetWd(sizeof(buffer), buffer);
+	strcat(buffer, "Messages");
+	pb = buffer;
+#else
+	sprintf(linebuf, "%s%sMessages", logolib, separator);
+#endif
 	bool haveMessages = true;
 	fp = fopen("Messages", "r");
     if (fp == NULL)
-		fp = fopen(linebuf, "r");
+		fp = fopen(pb, "r");
     if (fp == NULL)
 		fp = fopen("C:\\logo\\logolib\\Messages", "r");
     

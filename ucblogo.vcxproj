@@ -141,6 +141,7 @@
     <ClCompile Include="eval.cpp" />
     <ClCompile Include="files.cpp" />
     <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="init.cpp" />
     <ClCompile Include="intern.cpp" />
     <ClCompile Include="lists.cpp" />
