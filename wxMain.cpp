@@ -30,11 +30,13 @@ extern NODE *lload(NODE *);
 extern NODE *lsave(NODE *);
 extern int logo_stop_flag;
 extern int stop_quietly_flag;
+extern void wxSplitScreen();
 
 // ----------------------------------------------------------------------------
 // Globals
 // ----------------------------------------------------------------------------
 
+extern NODE *eval_buttonact;
 
 // externs from the logo interpreter 
 extern int start (int , char **);
@@ -115,7 +117,7 @@ void printToScreen(char c, FILE * stream)
 	return;
     }
 
-  if(TurtleFrame::in_graphics_mode && !TurtleFrame::in_splitscreen)
+  if(TurtleFrame::_in_graphics_mode && !TurtleFrame::_in_splitscreen)
     // we are in fullscreen mode
     wxSplitScreen();
   

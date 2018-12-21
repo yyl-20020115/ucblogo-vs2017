@@ -4,8 +4,17 @@
 #include <wx/stdpaths.h>
 #define WX_TURTLEGRAPHICS_CPP 1
 
+#include "smd.h"
+
 using namespace std;
 
+extern void wxSplitScreen();
+extern void wxFullScreen();
+extern void wxTextScreen();
+extern void get_palette(int slot,
+	unsigned int *r, unsigned int *g, unsigned int *b);
+extern void set_palette(int slot,
+	unsigned int r, unsigned int g, unsigned int b);
 
 #define SCREEN_WIDTH		1
 #define SCREEN_HEIGHT		2
@@ -52,11 +61,11 @@ DECLARE_EVENT_TABLE_ENTRY( \
 float fillScale;
 
 pen_info p;
-int TurtleFrame::back_ground = 0;
-int TurtleFrame::screen_height = 0; 
-int TurtleFrame::screen_width = 0;
-int TurtleFrame::in_graphics_mode = 0;
-int TurtleFrame::in_splitscreen = 0;
+int TurtleFrame::_back_ground = 0;
+int TurtleFrame::_screen_height = 0; 
+int TurtleFrame::_screen_width = 0;
+int TurtleFrame::_in_graphics_mode = 0;
+int TurtleFrame::_in_splitscreen = 0;
 pen_info TurtleFrame::xgr_pen = p;
 
 int drawToWindow = 0;	// for redraw_graphics from gui "thread"
@@ -79,7 +88,7 @@ int TurtleCanvas::mouse_down_middle;
 int TurtleCanvas::mouse_down_right;
 int TurtleCanvas::mouse_down_last;
 
-wxColour TurtleCanvas::colors[NUMCOLORS+SPECIAL_COLORS];
+wxColour TurtleCanvas::colors[T_NUMCOLORS + SPECIAL_COLORS];
 
 int R, G, B;
 
@@ -92,7 +101,6 @@ wxPageSetupDialogData* g_pageSetupData = (wxPageSetupDialogData*) NULL;
 
 // Used for printing
 TurtleWindowPrintout *turtlePrintout;
-int drawToPrinter;
 wxDC *printerDC;
 wxBitmap *tempBitmap;
 
@@ -101,6 +109,7 @@ int prepared = 0;
 TurtleFrame *turtleFrame;
 int turtleIndex = 0;
 int putInQueue = 0;
+extern int drawToPrinter;
 
 #if 0
 wxCommandEvent editEvent = wxCommandEvent(wxEVT_EDIT_CUSTOM_COMMAND);
@@ -108,8 +117,8 @@ wxCommandEvent editEvent = wxCommandEvent(wxEVT_EDIT_CUSTOM_COMMAND);
 char * file;
 
 // the location of the turtle
-int turtlePosition_x;
-int turtlePosition_y;
+extern int turtlePosition_x;
+extern int turtlePosition_y;
 
 #define LINEPAUSE 30
 
@@ -151,6 +160,7 @@ void PrintLines(){
 // is handled by the UI thread to avoid concurrency issues
 int alreadyDone = 0;
 
+extern void redraw_graphics(void);
 
 
 /* The TurtleCanvas event table*/
@@ -221,7 +231,7 @@ TurtleCanvas::TurtleCanvas(wxFrame *parent)
     TurtleCanvas::colors[SPECIAL_COLORS+13] = wxColour(144, 113, 208);
     TurtleCanvas::colors[SPECIAL_COLORS+14] = wxColour(255, 163, 0);
     TurtleCanvas::colors[SPECIAL_COLORS+15] = wxColour(183, 183, 183);
-  for(i=SPECIAL_COLORS+16;i<NUMCOLORS+SPECIAL_COLORS;i++){
+  for(i=SPECIAL_COLORS+16;i< T_NUMCOLORS +SPECIAL_COLORS;i++){
     TurtleCanvas::colors[i] =
         TurtleCanvas::colors[(i-SPECIAL_COLORS)%NUMINITCOLORS+SPECIAL_COLORS];
   }
@@ -250,7 +260,7 @@ TurtleCanvas::TurtleCanvas(wxFrame *parent)
   m_bitmap = new wxBitmap(m_w, m_h);
 
   PrepareDC(*m_memDC);
-  wxBrush myBrush(TurtleCanvas::colors[turtleFrame->back_ground
+  wxBrush myBrush(TurtleCanvas::colors[turtleFrame->_back_ground
 				       +SPECIAL_COLORS],wxSOLID);
   m_memDC->SelectObject(*m_bitmap);
   m_memDC->SetBackgroundMode( wxSOLID );
@@ -371,18 +381,18 @@ void TurtleCanvas::drawOneLine(struct line *l, wxDC *dc) {
     wxColour xorColor;
 
     if (l->pm==PEN_ERASE) {
-	myPen = wxPen(TurtleCanvas::colors[turtleFrame->back_ground+
+	myPen = wxPen(TurtleCanvas::colors[turtleFrame->_back_ground+
 					    SPECIAL_COLORS],
 			l->pw, wxSOLID);
 
     } else if (l->pm==PEN_REVERSE) {
 	unsigned int pr, pg, pb, br, bg, bb;
 	get_palette(l->color, &pr, &pg, &pb);
-	get_palette(turtleFrame->back_ground, &br, &bg, &bb);
+	get_palette(turtleFrame->_back_ground, &br, &bg, &bb);
 	xorColor=wxColour((pr^br)/256, (pg^bg)/256, (pb^bb)/256);
 	myPen = wxPen(xorColor, l->pw, wxSOLID);
 
-    } else if(drawToPrinter && turtleFrame->back_ground==0 && l->color==7){
+    } else if(drawToPrinter && turtleFrame->_back_ground==0 && l->color==7){
 	myPen = wxPen( wxT("black"), l->pw, wxSOLID);
     } else {
 	myPen = wxPen(TurtleCanvas::colors[l->color+SPECIAL_COLORS],
@@ -411,8 +421,8 @@ void TurtleCanvas::drawOneLine(struct line *l, wxDC *dc) {
 
 }
 
-int turtle_shown;
-void draw_turtle();
+extern int turtle_shown;
+extern void draw_turtle();
 extern int editor_active;  //from TextEditor.cpp
 
 void TurtleCanvas::editCall(){ 
@@ -489,9 +499,9 @@ void TurtleCanvas::OnMouseMove(wxMouseEvent& event){
 pen_info* getPen();
 
 void TurtleCanvas::realClearScreen(wxDC *dc) {
-    wxBrush myBrush(TurtleCanvas::colors[turtleFrame->back_ground+
+    wxBrush myBrush(TurtleCanvas::colors[turtleFrame->_back_ground+
 					    SPECIAL_COLORS],wxSOLID);
-    if(drawToPrinter && turtleFrame->back_ground==0){
+    if(drawToPrinter && turtleFrame->_back_ground==0){
 	    myBrush.SetColour(_T("white"));
     }
     dc->SetBackgroundMode( wxSOLID );
@@ -537,7 +547,7 @@ void TurtleCanvas::realdoFilled(int fillcolor, int count,
 	 wxptr->y = ptr->y;
     }
 
-    if(drawToPrinter && turtleFrame->back_ground==0 &&
+    if(drawToPrinter && turtleFrame->_back_ground==0 &&
 		turtleFrame->xgr_pen.color==7){
 	myPen = wxPen( wxT("black"), turtleFrame->xgr_pen.pw, wxSOLID);
     } else {
@@ -553,7 +563,7 @@ void TurtleCanvas::realdoFilled(int fillcolor, int count,
 
 }
 
-FLONUM y_scale;
+extern FLONUM y_scale;
 
 void wx_get_label_size(int *w, int *h) {
     /* returns size in pixels; converted to turtle steps in wxterm.c */
@@ -656,7 +666,7 @@ void TurtleCanvas::realDrawLabel(char *data, wxDC *dc) {
 	
     dc->GetTextExtent(s, &wid, &ht);
     dc->SetBackgroundMode(wxTRANSPARENT);
-    if (turtleFrame->back_ground == 0 && drawToPrinter) {
+    if (turtleFrame->_back_ground == 0 && drawToPrinter) {
 	dc->SetTextBackground(TurtleCanvas::colors[SPECIAL_COLORS+7]);
 	if (turtleFrame->xgr_pen.color == 7)
 	    dc->SetTextForeground(TurtleCanvas::colors[SPECIAL_COLORS+0]);
@@ -664,7 +674,7 @@ void TurtleCanvas::realDrawLabel(char *data, wxDC *dc) {
 	    dc->SetTextForeground(TurtleCanvas::colors
 				  [turtleFrame->xgr_pen.color+SPECIAL_COLORS]);
     } else {
-	dc->SetTextBackground(TurtleCanvas::colors[turtleFrame->back_ground+
+	dc->SetTextBackground(TurtleCanvas::colors[turtleFrame->_back_ground+
 						    SPECIAL_COLORS]);
 	dc->SetTextForeground(TurtleCanvas::colors[turtleFrame->xgr_pen.color+
 						    SPECIAL_COLORS]);
@@ -684,19 +694,19 @@ void TurtleCanvas::realDrawLabel(char *data, wxDC *dc) {
 void TurtleCanvas::setInfo(int type, int val){
 	switch (type){
 	case SCREEN_WIDTH:
-		turtleFrame->screen_width = val;
+		turtleFrame->_screen_width = val;
 		break;
 	case SCREEN_HEIGHT:
-		turtleFrame->screen_height = val;
+		turtleFrame->_screen_height = val;
 		break;
 	case BACK_GROUND:
-		turtleFrame->back_ground = val;
+		turtleFrame->_back_ground = val;
 		break;
 	case IN_SPLITSCREEN:
-		turtleFrame->in_splitscreen = val;
+		turtleFrame->_in_splitscreen = val;
 		break;
 	case IN_GRAPHICS_MODE:
-		turtleFrame->in_graphics_mode = val;
+		turtleFrame->_in_graphics_mode = val;
 		break;
 	}
 
@@ -706,19 +716,19 @@ void TurtleCanvas::setInfo(int type, int val){
 int TurtleCanvas::getInfo(int type){
 	switch (type){
 	case SCREEN_WIDTH:
-		return turtleFrame->screen_width;
+		return turtleFrame->_screen_width;
 		break;
 	case SCREEN_HEIGHT:
-		return turtleFrame->screen_height;
+		return turtleFrame->_screen_height;
 		break;
 	case BACK_GROUND:
-		return turtleFrame->back_ground;
+		return turtleFrame->_back_ground;
 		break;
 	case IN_SPLITSCREEN:
-		return turtleFrame->in_splitscreen;
+		return turtleFrame->_in_splitscreen;
 		break;
 	case IN_GRAPHICS_MODE:
-		return turtleFrame->in_graphics_mode;
+		return turtleFrame->_in_graphics_mode;
 		break;
 	}
 	return -1;
@@ -872,7 +882,7 @@ void wx_clear() {
       delete dc;
 #endif
 
-      if(!TurtleFrame::in_graphics_mode)
+      if(!TurtleFrame::_in_graphics_mode)
 	wxSplitScreen();
     }
     return;
@@ -885,7 +895,7 @@ void wxPrepare(){
       return;
     }
     
-    if(!turtleFrame->in_graphics_mode) {
+    if(!turtleFrame->_in_graphics_mode) {
 	wxSplitScreen();
     }
     if(!prepared){
@@ -912,7 +922,6 @@ void wxDrawLine(int x1, int y1, int x2, int y2, int vis){
 
 
     
-    wxDC *dc;
 
     struct line l;
     l.x1 = x1;
@@ -931,9 +940,9 @@ void wxDrawLine(int x1, int y1, int x2, int y2, int vis){
 #if USE_MEMDC
         TurtleCanvas::drawOneLine(&l, m_memDC);
 #else
-	dc = new wxClientDC(turtleGraphics);
-	TurtleCanvas::drawOneLine(&l, dc);
-	delete dc;
+		wxDC *dc = new wxClientDC(turtleGraphics);
+		TurtleCanvas::drawOneLine(&l, dc);
+		delete dc;
 #endif
     }
     return;
@@ -961,7 +970,7 @@ void wxSetPenWidth(int width){
     turtleFrame->xgr_pen.pw = width;
 }
 
-enum s_md {SCREEN_TEXT, SCREEN_SPLIT, SCREEN_FULL} screen_mode;
+extern enum s_md screen_mode;
 
 //the event calling this never seems to trigger...
 void TurtleCanvas::OnChar(wxKeyEvent& event) {
@@ -970,8 +979,8 @@ void TurtleCanvas::OnChar(wxKeyEvent& event) {
 
 /* Put the logoframe into splitscreen mode*/
 void wxSplitScreen(){
-    turtleFrame->in_graphics_mode = 1;
-    turtleFrame->in_splitscreen = 1;
+    turtleFrame->_in_graphics_mode = 1;
+    turtleFrame->_in_splitscreen = 1;
     topsizer->Show(wxTerminal::terminal, 1);
     topsizer->Show(turtleGraphics, 1);
     topsizer->Show(editWindow, 0);   
@@ -983,8 +992,8 @@ void wxSplitScreen(){
 
 /* Put the logoframe into full screen mode */
 void wxFullScreen(){
-    turtleFrame->in_graphics_mode = 1;
-    turtleFrame->in_splitscreen = 0;
+    turtleFrame->_in_graphics_mode = 1;
+    turtleFrame->_in_splitscreen = 0;
     topsizer->Show(wxTerminal::terminal, 0);
     topsizer->Show(turtleGraphics, 1);
     topsizer->Show(editWindow, 0);
@@ -996,8 +1005,8 @@ void wxFullScreen(){
 
 /* Put the logoframe into text screen mode*/
 void wxTextScreen(){
-  turtleFrame->in_graphics_mode = 0;
-  turtleFrame->in_splitscreen = 0;
+  turtleFrame->_in_graphics_mode = 0;
+  turtleFrame->_in_splitscreen = 0;
   topsizer->Show(wxTerminal::terminal, 1);
   topsizer->Show(turtleGraphics, 0);
   topsizer->Show(editWindow, 0);
@@ -1026,47 +1035,6 @@ void wxlPrintPreviewText(){
   wxCommandEvent event(wxEVT_LOGO_CUSTOM_COMMAND);
   logoFrame->OnPrintTextPrev(event);
 }
-
-void getMousePosition (int * x, int * y) {
-  *x = TurtleCanvas::mousePosition_x - wxGetInfo(SCREEN_WIDTH)/2;
-  *y = wxGetInfo(SCREEN_HEIGHT)/2 - TurtleCanvas::mousePosition_y;
-}
-
-void getClickPosition (int * x, int * y) {
-  *x = TurtleCanvas::clickPosition_x - wxGetInfo(SCREEN_WIDTH)/2;
-  *y = wxGetInfo(SCREEN_HEIGHT)/2 - TurtleCanvas::clickPosition_y;
-}
-
-int wxGetMouseX() {
-  int x, y;
-  getMousePosition(&x,&y);
-  return x;
-}
-int wxGetMouseY() {
-  int x, y;
-  getMousePosition(&x,&y);
-  return y;
-}
-
-int wxGetClickX() {
-  int x, y;
-  getClickPosition(&x,&y);
-  return x;
-}
-int wxGetClickY() {
-  int x, y;
-  getClickPosition(&x,&y);
-  return y;
-}
-
-int wxGetButton () {
-    return TurtleCanvas::mouse_down_left + TurtleCanvas::mouse_down_middle
-	    + TurtleCanvas::mouse_down_right;
-}
-int wxGetLastButton () {
-    return TurtleCanvas::mouse_down_last;
-}
-
 /* Show the text editor and have it load the given file */
 int wxEditFile(char * f){
   file = f;
@@ -1105,6 +1073,47 @@ void wxLabel(char * string) {
     }
 }
 
+
+
+void getMousePosition(int * x, int * y) {
+	*x = TurtleCanvas::mousePosition_x - wxGetInfo(SCREEN_WIDTH) / 2;
+	*y = wxGetInfo(SCREEN_HEIGHT) / 2 - TurtleCanvas::mousePosition_y;
+}
+
+void getClickPosition(int * x, int * y) {
+	*x = TurtleCanvas::clickPosition_x - wxGetInfo(SCREEN_WIDTH) / 2;
+	*y = wxGetInfo(SCREEN_HEIGHT) / 2 - TurtleCanvas::clickPosition_y;
+}
+
+int wxGetMouseX() {
+	int x, y;
+	getMousePosition(&x, &y);
+	return x;
+}
+int wxGetMouseY() {
+	int x, y;
+	getMousePosition(&x, &y);
+	return y;
+}
+
+int wxGetClickX() {
+	int x, y;
+	getClickPosition(&x, &y);
+	return x;
+}
+int wxGetClickY() {
+	int x, y;
+	getClickPosition(&x, &y);
+	return y;
+}
+
+int wxGetButton() {
+	return TurtleCanvas::mouse_down_left + TurtleCanvas::mouse_down_middle
+		+ TurtleCanvas::mouse_down_right;
+}
+int wxGetLastButton() {
+	return TurtleCanvas::mouse_down_last;
+}
 
 void TurtleCanvas::exitApplication()
 {

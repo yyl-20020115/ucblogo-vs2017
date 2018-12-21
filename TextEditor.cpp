@@ -192,8 +192,8 @@ void TextEditor::OnCloseEvent(wxCloseEvent& event){
 	OnCloseReject();
 }
 
-int getTermInfo(int);
-void setTermInfo(int,int);
+extern int getTermInfo(int);
+extern void setTermInfo(int,int);
 
 /* Closes the text editor and saves changes */
 void TextEditor::OnCloseAccept(){

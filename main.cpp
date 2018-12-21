@@ -81,13 +81,8 @@ void unblock_input(void) {
 
 extern int in_eval_save;
 
-#ifdef SIG_TAKES_ARG
-#define sig_arg 0
+
 RETSIGTYPE logo_stop(int sig)
-#else
-#define sig_arg 
-RETSIGTYPE logo_stop()
-#endif
 {
     if (inside_gc || in_eval_save) {
 	int_during_gc = 1;
@@ -106,13 +101,8 @@ RETSIGTYPE logo_stop()
     SIGRET
 }
 
-#ifdef SIG_TAKES_ARG
-#define sig_arg 0
+
 RETSIGTYPE logo_pause(int sig)
-#else
-#define sig_arg 
-RETSIGTYPE logo_pause()
-#endif
 {
     if (inside_gc || in_eval_save) {
 	int_during_gc = 2;
@@ -131,13 +121,8 @@ RETSIGTYPE logo_pause()
     SIGRET
 }
 
-#ifdef SIG_TAKES_ARG
-#define sig_arg 0
+
 RETSIGTYPE mouse_down(int sig)
-#else
-#define sig_arg 
-RETSIGTYPE mouse_down()
-#endif
 {
     NODE *line;
 
@@ -166,13 +151,7 @@ int keyact_set() {
 
 void do_keyact(int);
 
-#ifdef SIG_TAKES_ARG
-#define sig_arg 0
 RETSIGTYPE delayed_keyact(int sig)
-#else
-#define sig_arg 
-RETSIGTYPE delayed_keyact()
-#endif
 {
     do_keyact(readchar_lookahead_buf);
     SIGRET
@@ -198,15 +177,13 @@ void do_keyact(int ch) {
 }
 
 
-RETSIGTYPE (*intfuns[])() = {0, logo_stop, logo_pause, mouse_down,
+RETSIGTYPE (*intfuns[])(int) = {0, logo_stop, logo_pause, mouse_down,
 			     delayed_keyact};
 
 void delayed_int() {
-#ifdef SIG_TAKES_ARG
+
     (void)(*intfuns[int_during_gc])(0);
-#else
-    (void)(*intfuns[int_during_gc])();
-#endif
+
 }
 
 #if defined(__RZTC__) && !defined(WIN32) /* sowings */

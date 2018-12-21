@@ -27,7 +27,9 @@ pen_info* getPen();
 #define	BACK_GROUND			3
 #define	IN_SPLITSCREEN		4
 #define	IN_GRAPHICS_MODE	5
-#define NUMCOLORS 256
+#ifndef T_NUMCOLORS
+#define T_NUMCOLORS 512
+#endif
 #define NUMINITCOLORS 16
 
 
@@ -80,8 +82,8 @@ pen_info* getPen();
 
 #define move_to(a,b)             xgr_pen->xpos=(a); \
                                  xgr_pen->ypos=(b); \
-				 turtlePosition_x=screen_x_coord; \
-				 turtlePosition_y=screen_y_coord;
+				 turtlePosition_x=(int)screen_x_coord; \
+				 turtlePosition_y=(int)screen_y_coord;
 
 #define draw_string(s)           wxLabel(s);
 
@@ -90,10 +92,10 @@ pen_info* getPen();
 #define set_pen_mode(m)          xgr_pen->pen_md=(m)
 
 #define set_pen_color(c)         draw_turtle();\
-                                 xgr_pen->color=c%NUMCOLORS;\
+                                 xgr_pen->color=c%T_NUMCOLORS;\
                                  draw_turtle();
 
-#define set_back_ground(c)       wxSetInfo(BACK_GROUND,c%NUMCOLORS);\
+#define set_back_ground(c)       wxSetInfo(BACK_GROUND,c%T_NUMCOLORS);\
                                  redraw_graphics();
 
 #define set_pen_width(w)         wxSetPenWidth(w);

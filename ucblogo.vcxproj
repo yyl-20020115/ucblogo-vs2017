@@ -60,7 +60,6 @@
       <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include;C:\wxWidgets-2.8.8\lib\vc_lib\mswd;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>wxUSE_GUI=1;__WXDEBUG__;HAVE_WX;__WXMSW__;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
@@ -70,7 +69,8 @@
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <DisableSpecificWarnings>4996;</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4200;</DisableSpecificWarnings>
+      <MinimalRebuild />
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -109,7 +109,8 @@
       <PrecompiledHeaderOutputFile>.\Release\ucblogo.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
-      <DisableSpecificWarnings>4996;</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4200;</DisableSpecificWarnings>
+      <MinimalRebuild />
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -168,6 +169,7 @@
     <ClInclude Include="LogoFrame.h" />
     <ClInclude Include="macterm.h" />
     <ClInclude Include="nographics.h" />
+    <ClInclude Include="smd.h" />
     <ClInclude Include="TextEditor.h" />
     <ClInclude Include="win32trm.h" />
     <ClInclude Include="wxGlobals.h" />

@@ -13,7 +13,7 @@ void logofill(void);
 /* Some X-related defines. */
 #define BORDER	1
 #define FONT	"fixed"
-#define NUMCOLORS 512
+#define T_NUMCOLORS 512
 #define NUMINITCOLORS 16
 #define EVENT_MASK  (StructureNotifyMask | PointerMotionMask \
 		     | ButtonPressMask | ButtonReleaseMask)
@@ -83,12 +83,12 @@ extern void placate_x();
 #define set_pen_mode(m)          xgr_pen.pm=(m)
 
 #define set_pen_color(c)         draw_turtle();\
-                                 xgr_pen.color=c%NUMCOLORS;\
+                                 xgr_pen.color=c%T_NUMCOLORS;\
                                  XSetForeground(dpy,draw_gc,color[2+xgr_pen.color].pixel);\
                                  XSetForeground(dpy,reverse_gc,color[2+xgr_pen.color].pixel);\
                                  draw_turtle();
 
-#define set_back_ground(c)       back_ground=c%NUMCOLORS;\
+#define set_back_ground(c)       back_ground=c%T_NUMCOLORS;\
                                  XSetBackground(dpy,draw_gc,color[2+back_ground].pixel);\
                                  XSetBackground(dpy,reverse_gc,color[2+back_ground].pixel);\
                                  XSetBackground(dpy,erase_gc,color[2+back_ground].pixel);\

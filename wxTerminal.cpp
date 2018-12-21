@@ -32,7 +32,7 @@ extern std::string pathString;
 #include <wx/stdpaths.h>
 #include <ctype.h>
 
-int readingInstruction;
+extern int readingInstruction;
 
 #include <wx/print.h>
 #include "LogoFrame.h"
@@ -89,8 +89,8 @@ int latest_history_stored = 0;
 #endif
 
 // if logo is in character mode
-int logo_char_mode;
-int reading_char_now;
+extern int logo_char_mode;
+extern int reading_char_now;
 // the terminal DC
 wxFont old_font;
 wxTextAttr old_style;
@@ -116,13 +116,9 @@ void wxTextScreen();
 char *fooargv[2] = {"UCBLogo", 0};
 
 // This is for stopping logo asynchronously
-#ifdef SIG_TAKES_ARG
 RETSIGTYPE logo_stop(int);
 RETSIGTYPE logo_pause(int);
-#else
-RETSIGTYPE logo_stop();
-RETSIGTYPE logo_pause();
-#endif
+
 int logo_stop_flag = 0;
 int logo_pause_flag = 0;
 
@@ -258,7 +254,7 @@ LogoEventManager::LogoEventManager(LogoApplication *logoApp)
   m_logoApp = logoApp;
 }
 
-void wx_refresh();
+extern void wx_refresh();
 void LogoEventManager::ProcessEvents(int force_yield)
 {
   static int inside_yield = 0;
@@ -323,7 +319,7 @@ END_EVENT_TABLE()
 
 #include "ucblogo.xpm"
 
-void wxSetTextColor(int fg, int bg);
+extern void wxSetTextColor(long fg, long bg);
 
 //this should compute the size based on the chosen font!
 LogoFrame::LogoFrame (const wxChar *title,
@@ -388,7 +384,7 @@ LogoFrame::LogoFrame (const wxChar *title,
   SetUpMenu();
 }
 
-int wx_leave_mainloop;
+extern int wx_leave_mainloop;
 void LogoFrame::OnCloseWindow(wxCloseEvent& event)
 {
   logo_stop_flag = 1;
@@ -396,7 +392,7 @@ void LogoFrame::OnCloseWindow(wxCloseEvent& event)
   Destroy();
 }
 
-int need_save;
+extern int need_save;
 
 void LogoFrame::OnQuit(wxCommandEvent& event)
 {
@@ -481,13 +477,14 @@ void LogoFrame::DoPaste(wxCommandEvent& WXUNUSED(event)){
 
 void new_line(FILE *);
 int firstloadsave = 1;
-void *save_name;
+extern NODE *save_name;
 
 void doSave(char * name, int length);
 void doLoad(char * name, int length);
 
-void *cons(void*, void*);
-void lsave(void*);
+//void *cons(void*, void*);
+extern NODE* lsave(NODE* n);
+extern NODE *cons(NODE *x, NODE *y);
 
 void LogoFrame::OnSave(wxCommandEvent& event) {
     if (save_name != NULL) {
@@ -648,15 +645,15 @@ void LogoFrame::OnDecreaseFont(wxCommandEvent& WXUNUSED(event)){
 
 }
 
-void *Unbound;
+extern NODE *Unbound;
 
-void *IncreaseFont(void *) {
+NODE *IncreaseFont(NODE *) {
     wxCommandEvent dummy;
     logoFrame->OnIncreaseFont(dummy);
     return Unbound;
 }
 
-void *DecreaseFont(void *) {
+NODE *DecreaseFont(NODE *) {
     wxCommandEvent dummy;
     logoFrame->OnDecreaseFont(dummy);
     return Unbound;
@@ -1138,7 +1135,7 @@ void wxTerminal::DoPaste(){
 		  int num_newlines = 0;
 		  int len;
 		  char prev = ' ';
-		  for (i = 0; i < s.Length() && input_index < MAXINBUFF; i++){
+		  for (i = 0; i < (int)s.Length() && input_index < MAXINBUFF; i++){
 		    len = 1;
 		    c = s.GetChar(i);
 		    if (c == '\n') {
@@ -1722,7 +1719,7 @@ void wxTerminal::OnEraseBackground(wxEraseEvent &WXUNUSED(event))
   //don't erase background.. for double buffering!
 }
 
-void wxSetTextColor(int fg, int bg) {
+void wxSetTextColor(long fg, long bg) {
     wxTerminal::terminal->m_curFG = fg;
     wxTerminal::terminal->m_curBG = bg;
     wxTerminal::terminal->SetBackgroundColour(
@@ -2639,7 +2636,7 @@ void wx_enable_scrolling() {
   wxTerminal::terminal->EnableScrolling(TRUE);
 }
 
-extern enum s_md {SCREEN_TEXT, SCREEN_SPLIT, SCREEN_FULL} screen_mode;
+extern enum s_md screen_mode;
 
 
 int check_wx_stop(int force_yield) {

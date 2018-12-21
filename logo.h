@@ -301,7 +301,7 @@ typedef struct logo_node {
 	    FIXNUM nstring_len;
 	} nstring;
 	struct {
-	    struct logo_node * (*nprim_fun) ();
+	    struct logo_node * (*nprim_fun) (logo_node* n);
 	    short npriority;
 	    short nmin_args;
 	    short ndef_args;
@@ -660,5 +660,6 @@ struct registers {
 
 #define exp expresn
 #endif
+extern int check_wx_stop(int force_yield);
 
 #endif /* _LOGO_H */

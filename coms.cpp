@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_WX
-#define fgets wx_fgets
+//#define fgets wx_fgets
 extern int check_wx_stop(int force_yield);
 #endif
 
@@ -557,7 +557,7 @@ NODE *lshell(NODE *args) {
 #endif
     print_stringptr = old_stringptr;
     print_stringlen = old_stringlen;
-    fgets(cmdbuf,300,strm);
+	wx_fgets(cmdbuf,300,strm);
     while (!feof(strm)) {
 	len = (int)strlen(cmdbuf);
 	if (cmdbuf[len-1] == '\n')
@@ -573,7 +573,7 @@ NODE *lshell(NODE *args) {
 	    setcdr(tail, cons(_this,NIL));
 	    tail = cdr(tail);
 	}
-	fgets(cmdbuf,300,strm);
+	wx_fgets(cmdbuf,300,strm);
     }
 #ifdef __WXMSW__
 	_pclose(strm);

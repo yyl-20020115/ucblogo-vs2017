@@ -74,7 +74,9 @@ char *strnzcpy(char *s1, char *s2, int n) {
     s1[n] = '\0';
     return(s1);
 }
-
+char *word_strnzcpy_caller(char *s1, char *kludge, int n) {
+	return word_strnzcpy(s1, (NODE*)kludge, n);
+}
 char *word_strnzcpy(char *s1, NODE *kludge, int n) {  /* KLUDGE! */
     char *temp = s1;
 

@@ -210,7 +210,7 @@ void zrd_print_prompt(char *str) {
 #define into_line(chr) {if (phys_line >= p_end) { \
 				p_len += MAX_PHYS_LINE; \
 				p_pos = phys_line - p_line; \
-				p_line = realloc(p_line, p_len); \
+				p_line = (char*)realloc(p_line, p_len); \
 				p_end = &p_line[p_len-1]; \
 				phys_line = &p_line[p_pos]; \
 			    } \
@@ -264,7 +264,7 @@ charmode_off();
     dribbling = (dribblestream != NULL && strm == stdin);
 #endif
     if (p_line == 0) {
-    	p_line = malloc(MAX_PHYS_LINE);
+    	p_line = (char*)malloc(MAX_PHYS_LINE);
 	if (p_line == NULL) {
 	    err_logo(OUT_OF_MEM, NIL);
 		    return UNBOUND;

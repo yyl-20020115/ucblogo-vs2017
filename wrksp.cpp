@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_WX
-#define fgets wx_fgets
+//#define fgets wx_fgets
 #endif
 
 #ifdef WIN32
@@ -55,8 +55,10 @@ int wxEditFile(char *);
 #endif
 #endif
 
+#include <ctype.h>
 char *editor, *editorname, *tempdir;
 int to_pending = 0;
+extern void setTermInfo(int type, int val);
 
 NODE *make_procnode(NODE *lst, NODE *wrds, int min, int df, int max) {
     return(cons_list(0, lst, wrds, make_intnode((FIXNUM)min),
@@ -309,6 +311,10 @@ char *strncasestr(char *big, char *little, FIXNUM len) {
     }
     return NULL;    /* not reached, I think */
 }
+char* strncpy_impl(char* dest, char* src, int n)
+{
+	return strncpy(dest, src, n);
+}
 
 NODE *find_to(NODE *line) {
     char *lp = getstrptr(line);
@@ -326,11 +332,11 @@ NODE *find_to(NODE *line) {
 		    ((c = *(p-1)) == ' ' || c == '\t' || c == '\n'))
 		return make_strnode(p, getstrhead(line),
 				    getstrlen(line)-(p-lp),
-				    nodetype(line), strcpy);
+				    nodetype(line), strncpy_impl);
 	    if (c == '[')
 		return make_strnode(p, getstrhead(line),
 				    strchr(p, ']')-p,
-				    nodetype(line), strcpy);
+				    nodetype(line), strncpy_impl);
 	}
 	p++;
     }
@@ -1140,7 +1146,7 @@ char *expand_slash(NODE *wd) {
 
 	for (cp = getstrptr(wd), i=0, j = len; --j >= 0; )
 		if (getparity(*cp++)) i++;
-	result = malloc(len+i+1);
+	result =(char*) malloc(len+i+1);
 	if (result == NULL) {
 	    err_logo(OUT_OF_MEM, NIL);
 	    return 0;
@@ -1485,7 +1491,6 @@ char *addsep(char *path) {
 
 char tmp_filename[500] = "";
 int isEditFile = 0;
-int setTermInfo(int type, int val);
 
 NODE *leditfile(NODE *args) {
 
@@ -1502,7 +1507,6 @@ NODE *leditfile(NODE *args) {
     } else
     	return UNBOUND;
 }
-
 NODE *ledit(NODE *args) {
     FILE *holdstrm;
 #ifdef HAVE_WX
@@ -1715,7 +1719,7 @@ NODE *cpdf_newname(NODE *name, NODE*titleline) {
     p2 = p1+strcspn(p1, " \t");
     sprintf(buf, "%.*s%.*s%s",
 	    p1-titlestr, titlestr, getstrlen(nname), namestr, p2);
-    return make_strnode(buf, NULL, strlen(buf), STRING, strcpy);
+    return make_strnode(buf, NULL, strlen(buf), STRING, strncpy_impl);
 }
 
 NODE *lcopydef(NODE *args) {
@@ -1810,7 +1814,7 @@ NODE *lhelp(NODE *args) {
 	if (getstrlen(arg) == 1) {
 	    char *cp = strchr(inops,*(getstrptr(arg)));
 	    if (cp != NULL) {
-		arg=cnv_node_to_strnode(theName(Name_sum+(cp-inops)));
+		arg=cnv_node_to_strnode(theName((words)(Name_sum+(cp-inops))));
 	    }
 	}
 	if (getstrlen(arg) == 2) {
@@ -1858,7 +1862,7 @@ NODE *lhelp(NODE *args) {
     } else {
 	(void)ltextscreen(NIL);
 	lines = 0;
-	fgets(buffer, 200, fp);
+	wx_fgets(buffer, 200, fp);
 	while (NOT_THROWING && !feof(fp)) {
 #ifdef HAVE_WX
 		int getTermInfo(int val);
@@ -1878,7 +1882,7 @@ NODE *lhelp(NODE *args) {
 #ifdef WIN32
 		    (void)reader(stdin, "");
 #else
-		    fgets(junk, 19, stdin);
+			wx_fgets(junk, 19, stdin);
 #endif
 #endif
 		input_blocking = 0;
@@ -1886,7 +1890,7 @@ NODE *lhelp(NODE *args) {
 		lines = 1;
 	    }
 	    ndprintf(writestream, "%t", buffer);
-	    fgets(buffer, 200, fp);
+		wx_fgets(buffer, 200, fp);
 	}
 	fclose(fp);
     }

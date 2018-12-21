@@ -1,3 +1,5 @@
+#ifndef __WXGLOBALS_H__
+#define __WXGLOBALS_H__
 /*
  *      wxGlobals.h       wx logo global references module           
  *
@@ -97,3 +99,4 @@ extern int internal_check();
 
 
 extern int wx_Debugging;	/* in wxMain */
+#endif

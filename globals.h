@@ -32,26 +32,22 @@ extern NODE **bottom_stack;
 extern void delayed_int(void);
 extern NODE *command_line;
 
-#if defined(SIG_TAKES_ARG)
+
 extern RETSIGTYPE logo_stop(int);
 extern RETSIGTYPE logo_pause(int);
 extern RETSIGTYPE mouse_down(int);
 #define mouse_click mouse_down(0)
-#else
-extern RETSIGTYPE logo_stop(void);
-extern RETSIGTYPE logo_pause(void);
-extern RETSIGTYPE mouse_down(void);
-#define mouse_click mouse_down()
-#endif
+
 
 #ifndef TIOCSTI
 #include <setjmp.h>
 extern jmp_buf iblk_buf;
 #endif
-
+#include "smd.h"
 /* logodata.c */
 extern char *strnzcpy(char *, char *, int);
 extern char *word_strnzcpy(char *, NODE *, int);
+extern char *word_strnzcpy_caller(char *, char *, int);
 extern char *noparity_strnzcpy(char *, char *, int);
 extern char *backslashed_strnzcpy(char *, char *, int);
 extern char *mend_strnzcpy(char *, char *, int);
@@ -178,8 +174,8 @@ extern NODE *lbeforep(NODE *);
 
 /* intern.c */
 extern NODE *hash_table[HASH_LEN];
-void map_oblist(void (*)());
-extern NODE *make_instance(NODE *, NODE *);
+void map_oblist(void (*)(NODE* n));
+extern NODE *make_instance(NODE *n1, NODE *n2);
 extern NODE *intern(NODE *);
 
 /* print.c */
@@ -218,7 +214,6 @@ extern char *LogoPlatformName;
 #ifdef HAVE_WX
 extern char* wx_fgets(char* s, int n, FILE* stream);
 #endif
-
 extern char *editor, *editorname, *tempdir;
 extern int to_pending;
 extern NODE *ltext(NODE *);
@@ -459,6 +454,7 @@ int wxGetInfo(int);
 #undef IN_GRAPHICS_MODE
 #endif
 #endif
+
 extern mode_type current_mode;
 extern FLONUM turtle_x, turtle_y, turtle_heading, x_scale, y_scale;
 extern BOOLEAN turtle_shown;
@@ -530,7 +526,7 @@ extern void redraw_graphics(void);
 extern NODE *lscreenmode(NODE *n);
 extern NODE *lturtlemode(NODE *n);
 extern void fix_turtle_shownness(void);
-extern enum s_md {SCREEN_TEXT, SCREEN_SPLIT, SCREEN_FULL} screen_mode;
+extern enum s_md screen_mode;
 #ifdef HAVE_WX
 extern NODE *lprintpict(NODE *n);
 extern NODE *lprinttext(NODE *n);
@@ -614,8 +610,8 @@ extern void wxlPrintPict(void);
 extern void wxlPrintPreviewPict(void);
 extern void wxlPrintText(void);
 extern void wxlPrintPreviewText(void);
-extern NODE*IncreaseFont(void *);
-extern NODE*DecreaseFont(void *);
+extern NODE* IncreaseFont(NODE *);
+extern NODE* DecreaseFont(NODE *);
 extern int turtlePosition_x;
 extern int turtlePosition_y;
 #define SCREEN_WIDTH		1

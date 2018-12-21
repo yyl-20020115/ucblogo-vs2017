@@ -58,6 +58,7 @@
 
 #define FALSE	0
 #define TRUE	1
+extern void wxSetTextColor(long fg, long bg);
 
 char PC;
 char *BC;
@@ -79,7 +80,7 @@ struct sgttyb tty_cooked, tty_cbreak;
 
 int interactive, tty_charmode;
 int getTermInfo(int type);
-int setTermInfo(int type, int val);
+extern void setTermInfo(int type, int val);
 
 //extern char ***environ, *tgoto(), *tgetstr();
 

@@ -95,8 +95,8 @@ enum messageEnum {
 #define PEN_REVERSE              0
 #define PEN_ERASE                1
 #define PEN_DOWN                 2
-#ifdef  NUMCOLORS
-#define NUMCOLORS 512
+#ifndef T_NUMCOLORS
+#define T_NUMCOLORS 512
 #endif
 #define NUMINITCOLORS 16
 
@@ -117,11 +117,11 @@ public:
     void OnShow(wxCommandEvent &event);
 	
 	static int 
-		back_ground,
-		screen_height, 
-		screen_width,
-	    in_graphics_mode,
-	    in_splitscreen;
+		_back_ground,
+		_screen_height, 
+		_screen_width,
+	    _in_graphics_mode,
+	    _in_splitscreen;
 	static pen_info xgr_pen;
     int         m_backgroundMode;
     int         m_textureBackground;
@@ -212,7 +212,7 @@ public:
 	static int mouse_down_right;
 	static int mouse_down_last;
 
-	static wxColour colors[NUMCOLORS+SPECIAL_COLORS];
+	static wxColour colors[T_NUMCOLORS +SPECIAL_COLORS];
 
 private:
 

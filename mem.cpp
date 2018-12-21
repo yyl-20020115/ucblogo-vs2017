@@ -174,17 +174,17 @@ NODETYPES nodetype(NODE *nd) {
     return(nd->node_type);
 }
 
-void check_oldyoung(NODE *old, NODE *new) {
-    if (valid_pointer(new) && (new->my_gen < old->my_gen) &&
+void check_oldyoung(NODE *old, NODE *_new) {
+    if (valid_pointer(_new) && (_new->my_gen < old->my_gen) &&
 			      old->oldyoung_next == NIL) {
 	old->oldyoung_next = oldyoungs;
 	oldyoungs = old;
     }
 }
 
-void check_valid_oldyoung(NODE *old, NODE *new) {
-    if (new == NIL) return;
-    if ((new->my_gen < old->my_gen) && old->oldyoung_next == NIL) {
+void check_valid_oldyoung(NODE *old, NODE *_new) {
+    if (_new == NIL) return;
+    if ((_new->my_gen < old->my_gen) && old->oldyoung_next == NIL) {
 	old->oldyoung_next = oldyoungs;
 	oldyoungs = old;
     }
@@ -216,8 +216,8 @@ void setcdr(NODE *nd, NODE *newcdr) {
 #endif
 
 void do_gc(BOOLEAN full) {
-    register NODE *pa, *pb, *pc, *pd, *pe;	/* get registers onto stack */
-    register int aa, bb, cc, dd, ee;
+    register NODE *pa = 0, *pb = 0, *pc = 0, *pd = 0, *pe = 0;	/* get registers onto stack */
+    register int aa = 0, bb = 0, cc = 0, dd = 0, ee = 0;
     
     int_during_gc = 0;
     inside_gc++;

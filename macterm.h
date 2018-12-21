@@ -1,3 +1,5 @@
+#ifndef __MACTERM_H__
+#define __MACTERM_H__
 /*
  *      macterm.h          mac-specific graphics macros         mak
  *
@@ -126,3 +128,4 @@ extern void get_palette(int slot,
 			unsigned int *r, unsigned int *g, unsigned int *b);
 extern void set_palette(int slot,
 			unsigned int r, unsigned int g, unsigned int b);
+#endif

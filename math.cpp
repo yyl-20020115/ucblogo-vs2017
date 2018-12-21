@@ -120,13 +120,8 @@ NODE *lrerandom(NODE *arg) {
 jmp_buf oflo_buf;
 BOOLEAN handling_oflo = FALSE;
 
-#ifdef SIG_TAKES_ARG
-#define sig_arg 0
+
 RETSIGTYPE handle_oflo(int sig) {
-#else
-#define sig_arg 
-RETSIGTYPE handle_oflo() {
-#endif
     signal(SIGFPE, handle_oflo);
     if (handling_oflo) longjmp(oflo_buf,1);
     SIGRET
@@ -251,7 +246,7 @@ NODE *binary(NODE *args, char fcn) {
 	    handling_oflo = TRUE;
 	    if (fval > (FLONUM)MAXLOGOINT ||
 		    fval < -(FLONUM)MAXLOGOINT)
-		handle_oflo(sig_arg);
+		handle_oflo(0);
 	    ival = (FIXNUM)fval;
 	    imode = TRUE;
 	    handling_oflo = FALSE;

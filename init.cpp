@@ -28,6 +28,14 @@
 #include "globals.h"
 #include <string.h>
 #include <time.h>
+#include <direct.h>
+
+char* temploc = 0;
+char* separator = 0;
+char* libloc = 0;
+char* cslsloc = 0;
+int logo_char_mode = 0;
+
 
 typedef struct priminfo {
     char *name;
@@ -35,7 +43,7 @@ typedef struct priminfo {
     short defargs;
     short maxargs;
     short priority;
-    NODE *(*prim) ();
+    NODE *(*prim) (NODE*);
 } PRIMTYPE;
 
 NODE *Right_Paren, *Left_Paren, *Redefp, *Caseignoredp, *Erract, *Printdepthlimit,
@@ -768,7 +776,7 @@ nosugar:
     }
 
     for (i=0; i<(MAX_MESSAGE+NUM_WORDS); i++) {
-	while (fgets(linebuf, 99, fp) != NULL && linebuf[0] == ';') ;
+	while (wx_fgets(linebuf, 99, fp) != NULL && linebuf[0] == ';') ;
 	linebuf[strlen(linebuf)-1] = '\0';
 	message_texts[i] = (char *) malloc(1+strlen(linebuf));
 	strcpy(message_texts[i], linebuf);

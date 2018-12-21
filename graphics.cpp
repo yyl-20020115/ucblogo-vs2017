@@ -47,6 +47,14 @@
 
 #include "globals.h"
 
+extern void wxSetPenWidth(int width);
+extern void wxLabel(char * string);
+extern int wxGetLastButton();
+extern int wxGetClickX();
+extern int wxGetClickY();
+extern NODE *evaluator(NODE *list, enum labels where);
+extern void doFilled(int fillcolor, int count, struct mypoint *points);
+
 #ifdef HAVE_WX
 int drawToPrinter=0;
 int turtlePosition_x=0;
@@ -257,10 +265,10 @@ void draw_turtle_helper(void) {
     top_y = g_round(turtle_y + y_scale*(FLONUM)(sin_real_heading*turtle_side));
  
     /* move to right, draw to left, draw to top, draw to right */
-    move_to(screen_x_center + right_x, screen_y_center - right_y);
-    line_to(screen_x_center + left_x, screen_y_center - left_y);
-    line_to(screen_x_center + top_x, screen_y_center - top_y);
-    line_to(screen_x_center + right_x, screen_y_center - right_y);
+    move_to((int)screen_x_center + right_x, (int)screen_y_center - right_y);
+    line_to((int)screen_x_center + left_x, (int)screen_y_center - left_y);
+    line_to((int)screen_x_center + top_x, (int)screen_y_center - top_y);
+    line_to((int)screen_x_center + right_x, (int)screen_y_center - right_y);
  
     restore_pen(&saved_pen);
     done_drawing_turtle;
@@ -742,7 +750,7 @@ void cs_helper(int centerp) {
     if (centerp) {
 	wanna_x = wanna_y = turtle_x = turtle_y = turtle_heading = 0.0;
 	out_of_bounds = FALSE;
-	move_to(screen_x_coord, screen_y_coord);
+	move_to((int)screen_x_coord, (int)screen_y_coord);
     }
     if (!graphics_setup) {
 	graphics_setup++;
@@ -899,7 +907,7 @@ NODE *lwrap(NODE *args) {
     while (turtle_y < turtle_bottom_max) {
 	turtle_y += screen_height;
     }
-    move_to(screen_x_coord, screen_y_coord);
+    move_to((int)screen_x_coord, (int)screen_y_coord);
     draw_turtle();
     done_drawing;
     return(UNBOUND);
@@ -966,7 +974,7 @@ NODE *llabel(NODE *arg) {
     if (NOT_THROWING) {
 	prepare_to_draw;
 	draw_turtle();
-	theLength = strlen(textbuf);
+	theLength = (short)strlen(textbuf);
 #ifdef mac
 	c_to_pascal_string(textbuf, theLength);
 #endif
@@ -1511,7 +1519,7 @@ NODE *lfilled(NODE *args) {
 	}
 
 	doing_filled = TRUE;
-	(void)evaluator(arg, begin_line);
+	evaluator(arg, begin_line);
 	doing_filled = FALSE;
     }
 
@@ -1567,7 +1575,7 @@ NODE *lfilled(NODE *args) {
 		    break;
 	    }
 	}
-	point = points = malloc((count+1)*sizeof(struct mypoint));
+	point = points = (mypoint*)malloc((count+1)*sizeof(struct mypoint));
 	point->x = g_round(x1);
 	point->y = g_round(y1);
 	point++;
@@ -1582,8 +1590,8 @@ NODE *lfilled(NODE *args) {
 	    case (MOVEXY) :
 		lastx = *(int *)(ptr + idx + One);
 		lasty = *(int *)(ptr + idx + Two);
-		point->x = screen_x_center+lastx;
-		point->y = screen_y_center-lasty;
+		point->x = (int)(screen_x_center+lastx);
+		point->y = (int)(screen_y_center-lasty);
 		point++;
 	    case (SETPENMODE) :
 	    case (SETPENSIZE) :
@@ -1672,7 +1680,7 @@ BOOLEAN safe_to_save(void) {
 	record_index = One;
 	return TRUE;
     }
-    newbuf = malloc(GR_SIZE);	/* get a new buffer */
+    newbuf = (char*)malloc(GR_SIZE);	/* get a new buffer */
     if (newbuf == NULL) return FALSE;	/* failed */
     
     *(record + record_index) = NEXTBUFFER;
@@ -1822,9 +1830,9 @@ void redraw_graphics(void) {
     BOOLEAN save_splitscreen = in_splitscreen;
 #endif
 #ifdef HAVE_WX
-    char *start, *ptr;
-    int start_idx, idx, count, color;
-    unsigned int r,g,b;
+    char *start = 0, *ptr = 0;
+    int start_idx = 0, idx = 0, count = 0, color = 0;
+    unsigned int r = 0,g = 0,b = 0;
     struct mypoint *points = 0, *point = 0;
 #endif
 
@@ -1854,7 +1862,7 @@ void redraw_graphics(void) {
     erase_screen();
     wanna_x = wanna_y = turtle_x = turtle_y = turtle_heading = 0.0;
     out_of_bounds = FALSE;
-    move_to(screen_x_coord, screen_y_coord);
+    move_to((int)screen_x_coord, (int)screen_y_coord);
     internal_penmode = PENMODE_PAINT;
     pen_down;
     set_pen_color((FIXNUM)7);
@@ -1887,19 +1895,19 @@ void redraw_graphics(void) {
 	    case (MOVEXY) :
 		lastx = *(int *)(bufp + r_index + One);
 		lasty = *(int *)(bufp + r_index + Two);
-		move_to(screen_x_center+lastx, screen_y_center-lasty);
+		move_to((int)screen_x_center+lastx, (int)screen_y_center-lasty);
 		r_index += Three;
 #ifdef HAVE_WX
 	    if (point != NULL) {
-		point->x = screen_x_center+lastx;
-		point->y = screen_y_center-lasty;
+		point->x = (int)screen_x_center+lastx;
+		point->y = (int)screen_y_center-lasty;
 		point++;
 	    }
 #endif
 		break;
 	    case (LABEL) :
- 		draw_string((unsigned char *)(bufp + r_index + One+1));
-		move_to(screen_x_center+lastx, screen_y_center-lasty);
+ 		draw_string(( char *)(bufp + r_index + One+1));
+		move_to((int)screen_x_center+lastx, (int)screen_y_center-lasty);
 		r_index += (One+2 + bufp[r_index + One] + (One-1)) & ~(One-1);
 		break;
 	    case (SETPENVIS) :
@@ -1938,7 +1946,7 @@ void redraw_graphics(void) {
 		break;
 	    case (STARTFILL) :
 #ifdef HAVE_WX
-		point = points = malloc((*(int *)(bufp + r_index + One))
+		point = points = (mypoint*)malloc((*(int *)(bufp + r_index + One))
 					    * sizeof(struct mypoint));
 		if (point != NULL) {
 		    point->x = screen_x_center+lastx;
@@ -2104,7 +2112,7 @@ NODE *lloadpict(NODE *args) {
 	    }
 	    newbuf = *(char **)(buf);
 	    if (newbuf == 0) {
-		newbuf = malloc(GR_SIZE);	/* get a new buffer */
+		newbuf = (char*)malloc(GR_SIZE);	/* get a new buffer */
 		if (newbuf == NULL) {
 		    done_drawing;
 		    err_logo(FILE_ERROR,

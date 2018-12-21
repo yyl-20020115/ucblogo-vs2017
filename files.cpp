@@ -371,7 +371,7 @@ NODE *lerasefile(NODE *arg) {
 
     arg = cnv_node_to_strnode(car(arg));
     if (arg == UNBOUND) return(UNBOUND);
-    fnstr = malloc((size_t)getstrlen(arg) + 1);
+    fnstr = (char*)malloc((size_t)getstrlen(arg) + 1);
     if (fnstr == NULL) {
 	err_logo(FILE_ERROR, make_static_strnode(message_texts[MEM_LOW]));
 	return UNBOUND;
@@ -640,7 +640,7 @@ NODE *lreadchars(NODE *args) {
     if (!setjmp(iblk_buf))
 #endif
     {
-	strhead = malloc((size_t)(c + sizeof(FIXNUM) + 1));
+	strhead =(string_block*) malloc((size_t)(c + sizeof(FIXNUM) + 1));
 	if (strhead == NULL) {
 	    err_logo(FILE_ERROR, make_static_strnode(message_texts[MEM_LOW]));
 	    return UNBOUND;

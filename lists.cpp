@@ -356,7 +356,7 @@ NODE *lword(NODE *args) {
     }
     if (NOT_THROWING)
 	val = make_strnode((char *)args, (struct string_block *)NULL,
-			   cnt, str_type, word_strnzcpy); /* kludge */
+			   cnt, str_type, word_strnzcpy_caller); /* kludge */
     else
 	val = UNBOUND;
     return(val);
@@ -576,21 +576,21 @@ NODE *litem(NODE *args) {
     return(UNBOUND);
 }
 
-int circular(NODE *arr, NODE *new) {
-    if (new == NIL) return(0);
-    else if (nodetype(new) == ARRAY) {
-	int i = getarrdim(new);
-	NODE **p = getarrptr(new);
+int circular(NODE *arr, NODE *_new) {
+    if (_new == NIL) return(0);
+    else if (nodetype(_new) == ARRAY) {
+	int i = getarrdim(_new);
+	NODE **p = getarrptr(_new);
 
-	if (new == arr) return(1);
+	if (_new == arr) return(1);
 	while (--i >= 0) {
 	    if (circular(arr,*p++)) return(1);
 	}
 	return(0);
-    } else if (is_list(new)) {
-	while (new != NIL) {
-	    if (circular(arr,car(new))) return(1);
-	    new = cdr(new);
+    } else if (is_list(_new)) {
+	while (_new != NIL) {
+	    if (circular(arr,car(_new))) return(1);
+		_new = cdr(_new);
 	}
 	return(0);
     } else return(0);

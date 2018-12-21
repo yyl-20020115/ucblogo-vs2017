@@ -29,6 +29,7 @@ NODE *Regs_Node;
 int num_saved_nodes;
 int inside_evaluator = 0;
 NODE *eval_buttonact = NIL;
+extern char* strncpy_impl(char* dest, char* src, int n);
 
 /* node-value registers that don't need saving */
 
@@ -155,7 +156,7 @@ NODE *restname, *restline;
 /* These variables are all externed in globals.h */
 
 CTRLTYPE    stopping_flag = RUN;
-char	    *logolib, *helpfiles, *csls;
+char	    *logolib, *helpfiles, *csls,*helploc;
 FIXNUM	    dont_fix_ift = 0;
 
 /* These variables are local to this file. */
@@ -265,7 +266,7 @@ void reset_args(NODE *old_stack) {
 NODE *bf3(NODE *name) {
     NODE *string = cnv_node_to_strnode(name);
     return make_strnode(getstrptr(string)+3, getstrhead(string),
-			getstrlen(string)-3, nodetype(string), strcpy);
+			getstrlen(string)-3, nodetype(string), strncpy_impl);
 }
 
 NODE *deep_copy(NODE *exp) {
@@ -632,7 +633,7 @@ compound_apply:
     check_ibm_stop();
 #endif
 #ifdef HAVE_WX
-    check_wx_stop();
+    check_wx_stop(0);
 #endif
     if ((tracing = flag__caseobj(fun, PROC_TRACED))) {
 	for (i = 0; i < trace_level; i++) print_space(writestream);
